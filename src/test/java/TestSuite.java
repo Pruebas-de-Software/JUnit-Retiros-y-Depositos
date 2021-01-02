@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestSuite {
     private final BankConsoleSystem system;
+    private SystemError result;
 
     public TestSuite() {
         this.system = new BankConsoleSystem();
@@ -41,11 +42,30 @@ public class TestSuite {
 
     @Test
     public void testLogIn() {
+        system.reloadDefaults();
+        result = system.logIn(2021, "new_year1!");
+        assertEquals(SystemError.OK, result);
+    }
+
+    @Test
+    public void testLogInInvalidCredentials() {
+        system.reloadDefaults();
+        result = system.logIn(2021, "invalid_password");
+        assertEquals(SystemError.USER_INVALID_CREDENTIALS, result);
+    }
+
+    @Test
+    public void testLogInUserNotExists() {
         assertEquals(true, false);
     }
 
     @Test
     public void testLogOut() {
+        assertEquals(true, false);
+    }
+
+    @Test
+    public void testLogOutNotLoggedIn() {
         assertEquals(true, false);
     }
 }
