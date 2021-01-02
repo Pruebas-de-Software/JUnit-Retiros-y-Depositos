@@ -43,8 +43,9 @@ public class TestSuite {
     @Test
     public void testLogIn() {
         system.reloadDefaults();
-        result = system.logIn(2021, "new_year1!");
+        result = system.logIn(2021, "new_year!");
         assertEquals(SystemError.OK, result);
+        assertEquals(2021, system.getCurrentUser().getUserId());
     }
 
     @Test
@@ -52,6 +53,7 @@ public class TestSuite {
         system.reloadDefaults();
         result = system.logIn(2021, "invalid_password");
         assertEquals(SystemError.USER_INVALID_CREDENTIALS, result);
+        assertNull(system.getCurrentUser());
     }
 
     @Test

@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BankConsoleSystem {
@@ -20,7 +19,21 @@ public class BankConsoleSystem {
     }
 
     public SystemError logIn(int id, String password) {
-        return SystemError.UNKNOWN;
+        if(systemUsers.containsKey(id)) {
+            Client client = systemUsers.get(id);
+            if (client.validatePassword(password)) {
+                currentUser = client;
+                return SystemError.OK;
+            } else {
+                return SystemError.USER_INVALID_CREDENTIALS;
+            }
+        } else {
+            return SystemError.USER_NOT_EXISTS;
+        }
+    }
+
+    public Client getCurrentUser() {
+        return currentUser;
     }
 
     public void reloadDefaults() {
