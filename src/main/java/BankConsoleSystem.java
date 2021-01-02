@@ -32,6 +32,15 @@ public class BankConsoleSystem {
         }
     }
 
+    public SystemError logOut() {
+        if (currentUser != null) {
+            currentUser = null;
+            return SystemError.OK;
+        } else {
+            return SystemError.NOT_LOGGED_IN;
+        }
+    }
+
     public Client getCurrentUser() {
         return currentUser;
     }

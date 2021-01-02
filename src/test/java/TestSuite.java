@@ -49,6 +49,11 @@ public class TestSuite {
     }
 
     @Test
+    public void testLogInAlreadyLoggedIn() {
+        assertEquals(true, false);
+    }
+
+    @Test
     public void testLogInInvalidCredentials() {
         system.reloadDefaults();
         result = system.logIn(2021, "invalid_password");
@@ -66,11 +71,18 @@ public class TestSuite {
 
     @Test
     public void testLogOut() {
-        assertEquals(true, false);
+        system.reloadDefaults();
+        result = system.logIn(2021, "new_year!");
+        assertEquals(SystemError.OK, result);
+        result = system.logOut();
+        assertEquals(SystemError.OK, result);
     }
 
     @Test
     public void testLogOutNotLoggedIn() {
-        assertEquals(true, false);
+        system.reloadDefaults();
+        result = system.logOut();
+        assertEquals(SystemError.NOT_LOGGED_IN, result);
     }
+
 }
