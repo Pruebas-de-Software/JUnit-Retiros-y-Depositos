@@ -50,7 +50,7 @@ public class BankConsoleSystem {
     }
 
     public void reloadDefaults() {
-        // This resets accounts
+        setup();
     }
 
     public void interactive() {
