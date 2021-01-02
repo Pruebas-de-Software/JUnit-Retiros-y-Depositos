@@ -58,7 +58,10 @@ public class TestSuite {
 
     @Test
     public void testLogInUserNotExists() {
-        assertEquals(true, false);
+        system.reloadDefaults();
+        result = system.logIn(2020, "valid_password");
+        assertEquals(SystemError.USER_NOT_EXISTS, result);
+        assertNull(system.getCurrentUser());
     }
 
     @Test
