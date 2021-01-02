@@ -58,6 +58,7 @@ public class TestSuite {
         assertEquals(SystemError.OK, result);
         result = system.logIn(2020, "valid_password");
         assertEquals(SystemError.USER_ALREADY_LOGGED_IN, result);
+        assertEquals(2021, system.getCurrentUser().getUserId());
     }
 
     @Test
@@ -80,12 +81,14 @@ public class TestSuite {
         assertEquals(SystemError.OK, result);
         result = system.logOut();
         assertEquals(SystemError.OK, result);
+        assertNull(system.getCurrentUser());
     }
 
     @Test
     public void testLogOutNotLoggedIn() {
         result = system.logOut();
         assertEquals(SystemError.USER_NOT_LOGGED_IN, result);
+        assertNull(system.getCurrentUser());
     }
 
 }
