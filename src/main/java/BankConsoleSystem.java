@@ -19,16 +19,20 @@ public class BankConsoleSystem {
     }
 
     public SystemError logIn(int id, String password) {
-        if(systemUsers.containsKey(id)) {
-            Client client = systemUsers.get(id);
-            if (client.validatePassword(password)) {
-                currentUser = client;
-                return SystemError.OK;
+        if (currentUser == null) {
+            if (systemUsers.containsKey(id)) {
+                Client client = systemUsers.get(id);
+                if (client.validatePassword(password)) {
+                    currentUser = client;
+                    return SystemError.OK;
+                } else {
+                    return SystemError.USER_INVALID_CREDENTIALS;
+                }
             } else {
-                return SystemError.USER_INVALID_CREDENTIALS;
+                return SystemError.USER_NOT_EXISTS;
             }
         } else {
-            return SystemError.USER_NOT_EXISTS;
+            return SystemError.USER_ALREADY_LOGGED_IN;
         }
     }
 
@@ -37,7 +41,7 @@ public class BankConsoleSystem {
             currentUser = null;
             return SystemError.OK;
         } else {
-            return SystemError.NOT_LOGGED_IN;
+            return SystemError.USER_NOT_LOGGED_IN;
         }
     }
 

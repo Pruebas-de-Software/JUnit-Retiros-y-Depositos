@@ -7,7 +7,6 @@ public class TestSuite {
 
     public TestSuite() {
         this.system = new BankConsoleSystem();
-        this.system.reloadDefaults();
     }
 
     @Test
@@ -50,7 +49,11 @@ public class TestSuite {
 
     @Test
     public void testLogInAlreadyLoggedIn() {
-        assertEquals(true, false);
+        system.reloadDefaults();
+        result = system.logIn(2021, "new_year!");
+        assertEquals(SystemError.OK, result);
+        result = system.logIn(2020, "valid_password");
+        assertEquals(SystemError.USER_ALREADY_LOGGED_IN, result);
     }
 
     @Test
@@ -82,7 +85,7 @@ public class TestSuite {
     public void testLogOutNotLoggedIn() {
         system.reloadDefaults();
         result = system.logOut();
-        assertEquals(SystemError.NOT_LOGGED_IN, result);
+        assertEquals(SystemError.USER_NOT_LOGGED_IN, result);
     }
 
 }
