@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,6 +8,11 @@ public class TestSuite {
 
     public TestSuite() {
         this.system = new BankConsoleSystem();
+    }
+
+    @BeforeEach
+    private void reloadDefaults() {
+        this.system.reloadDefaults();
     }
 
     @Test
@@ -41,7 +47,6 @@ public class TestSuite {
 
     @Test
     public void testLogIn() {
-        system.reloadDefaults();
         result = system.logIn(2021, "new_year!");
         assertEquals(SystemError.OK, result);
         assertEquals(2021, system.getCurrentUser().getUserId());
@@ -49,7 +54,6 @@ public class TestSuite {
 
     @Test
     public void testLogInAlreadyLoggedIn() {
-        system.reloadDefaults();
         result = system.logIn(2021, "new_year!");
         assertEquals(SystemError.OK, result);
         result = system.logIn(2020, "valid_password");
@@ -58,7 +62,6 @@ public class TestSuite {
 
     @Test
     public void testLogInInvalidCredentials() {
-        system.reloadDefaults();
         result = system.logIn(2021, "invalid_password");
         assertEquals(SystemError.USER_INVALID_CREDENTIALS, result);
         assertNull(system.getCurrentUser());
@@ -66,7 +69,6 @@ public class TestSuite {
 
     @Test
     public void testLogInUserNotExists() {
-        system.reloadDefaults();
         result = system.logIn(2020, "valid_password");
         assertEquals(SystemError.USER_NOT_EXISTS, result);
         assertNull(system.getCurrentUser());
@@ -74,7 +76,6 @@ public class TestSuite {
 
     @Test
     public void testLogOut() {
-        system.reloadDefaults();
         result = system.logIn(2021, "new_year!");
         assertEquals(SystemError.OK, result);
         result = system.logOut();
@@ -83,7 +84,6 @@ public class TestSuite {
 
     @Test
     public void testLogOutNotLoggedIn() {
-        system.reloadDefaults();
         result = system.logOut();
         assertEquals(SystemError.USER_NOT_LOGGED_IN, result);
     }
