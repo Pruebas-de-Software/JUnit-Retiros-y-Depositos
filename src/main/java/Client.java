@@ -20,8 +20,6 @@ public class Client {
         accountCLP = new CurrencyAccount(false);
         accountUSD = new CurrencyAccount(true);
         try {
-            // This could be a test, but is not needed by the spec (?)
-            // FIXME: When all test are finished add a new test for this
             hashing = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException exception) {
             System.exit(2);
