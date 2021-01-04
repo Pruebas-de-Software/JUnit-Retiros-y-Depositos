@@ -3,6 +3,10 @@ import java.util.HashMap;
 public class BankConsoleSystem {
     private Client currentUser;
     private HashMap<Integer, Client> systemUsers;
+    private final float MIN_DEPOSIT_USD = 10;
+    private final float MIN_DEPOSIT_CLP = 2000;
+    private final float MIN_WITHDRAW_USD = 10;
+    private final float MIN_WITHDRAW_CLP = 2000;
 
     public BankConsoleSystem() {
         setup();
@@ -20,7 +24,26 @@ public class BankConsoleSystem {
     }
 
     public SystemError deposit(long amount, boolean isUSD) {
-        return SystemError.UNKNOWN;
+        if (currentUser != null) {
+            Operation op;
+            if (isUSD) {
+                if (amount > MIN_DEPOSIT_USD) {
+                    op = new Operation(true, true, amount);
+                    return currentUser.doOperation(op);
+                } else {
+                    return SystemError.INVALID_OPERATION_AMOUNT;
+                }
+            } else {
+                if (amount > MIN_DEPOSIT_CLP) {
+                    op = new Operation(true, false, amount);
+                    return currentUser.doOperation(op);
+                } else {
+                    return SystemError.INVALID_OPERATION_AMOUNT;
+                }
+            }
+        } else {
+            return SystemError.USER_NOT_LOGGED_IN;
+        }
     }
 
     public SystemError withdraw(long amount, boolean isUSD) {

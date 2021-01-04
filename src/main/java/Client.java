@@ -14,8 +14,8 @@ public class Client {
     private MessageDigest hashing;
 
     public Client(int id, String clearPassword) {
-        accountCLP = new CurrencyAccount();
-        accountUSD = new CurrencyAccount();
+        accountCLP = new CurrencyAccount(false);
+        accountUSD = new CurrencyAccount(true);
         try {
             // This could be a test, but is not needed by the spec (?)
             // FIXME: When all test are finished add a new test for this
@@ -36,14 +36,36 @@ public class Client {
     }
 
     public long getBalance(boolean isUSD) {
-        return -1;
+        if (isUSD) {
+            return accountUSD.getBalance();
+        } else {
+            return accountCLP.getBalance();
+        }
     }
 
     public int getUserId() {
         return userId;
     }
 
+    public ArrayList<Operation> getHistory() {
+        return history;
+    }
+
     public SystemError doOperation(Operation op) {
+        history.add(op);
+        if (op.isDeposit()) {
+            long before;
+            if (op.isUSD()) {
+                before = accountUSD.getBalance();
+                long updated = before + op.getValue();
+                accountUSD.setBalance(updated);
+            } else {
+                before = accountCLP.getBalance();
+                long updated = before + op.getValue();
+                accountCLP.setBalance(updated);
+            }
+            return SystemError.OK;
+        }
         return SystemError.UNKNOWN;
     }
 }

@@ -17,9 +17,16 @@ public class TestSuite {
 
     @Test
     public void testDepositCLP() {
+        system.logIn(2021, "new_year!");
         result = system.deposit(300_000, false);
         assertEquals(SystemError.OK, result);
         assertEquals(1_300_000, system.getCurrentUser().getBalance(false));
+    }
+
+    @Test
+    public void testDepositCLPNotLoggedIn() {
+        result = system.deposit(300_000, false);
+        assertEquals(SystemError.USER_NOT_LOGGED_IN, result);
     }
 
     @Test
@@ -42,6 +49,13 @@ public class TestSuite {
         result = system.deposit(200, true);
         assertEquals(SystemError.OK, result);
         assertEquals(200, system.getCurrentUser().getBalance(true));
+    }
+
+    @Test
+    public void testDepositUSDNotLoggedIn() {
+        result = system.deposit(300_000, false);
+        assertEquals(SystemError.OK, result);
+        assertEquals(1_300_000, system.getCurrentUser().getBalance(false));
     }
 
     @Test
@@ -168,8 +182,7 @@ public class TestSuite {
 
     @Test
     public void testLogInAlreadyLoggedIn() {
-        result = system.logIn(2021, "new_year!");
-        assertEquals(SystemError.OK, result);
+        system.logIn(2021, "new_year!");
         result = system.logIn(2020, "valid_password");
         assertEquals(SystemError.USER_ALREADY_LOGGED_IN, result);
         assertEquals(2021, system.getCurrentUser().getUserId());
@@ -191,8 +204,7 @@ public class TestSuite {
 
     @Test
     public void testLogOut() {
-        result = system.logIn(2021, "new_year!");
-        assertEquals(SystemError.OK, result);
+        system.logIn(2021, "new_year!");
         result = system.logOut();
         assertEquals(SystemError.OK, result);
         assertNull(system.getCurrentUser());
