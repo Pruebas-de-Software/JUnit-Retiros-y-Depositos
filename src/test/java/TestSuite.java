@@ -128,21 +128,26 @@ public class TestSuite {
     @Test
     public void testWithdrawCLPAllFunds() {
         system.logIn(2021, "new_year!");
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             result = system.withdraw(200_000, false);
             assertEquals(SystemError.OK, result);
         }
+        system.logOut();
+        system.logIn(2021, "new_year!");
+        result = system.withdraw(200_000, false);
+        assertEquals(SystemError.OK, result);
         assertEquals(0, system.getCurrentUser().getBalance(false));
     }
 
     @Test
     public void testWithdrawCLPNoFunds() {
         system.logIn(2021, "new_year!");
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             system.withdraw(200_000, false);
         }
         system.logOut();
         system.logIn(2021, "new_year!");
+        system.withdraw(200_000, false);
         result = system.withdraw(100_000, false);
         assertEquals(SystemError.INVALID_OPERATION_AMOUNT_NO_FUNDS, result);
     }
@@ -197,7 +202,7 @@ public class TestSuite {
     @Test
     public void testNumberOfOperationsInSession() {
         system.logIn(2021, "new_year!");
-        for (int i = 0; i <= 4; i++) {
+        for (int i = 0; i < 4; i++) {
             result = system.deposit(50, true);
         }
         assertEquals(SystemError.OK, result);
@@ -282,11 +287,10 @@ public class TestSuite {
         system.withdraw(40, true);
         system.withdraw(150_000, false);
         system.deposit(50_000, false);
-        system.withdraw(5_000, false);
         historyResult = system.getHistory();
 
         assertEquals(SystemError.OK, historyResult.getFirst());
-        assertEquals(5, historyResult.getSecond().size());
+        assertEquals(4, historyResult.getSecond().size());
 
         assertEquals(50, historyResult.getSecond().get(0).getValue());
         assertTrue(historyResult.getSecond().get(0).isDeposit());
@@ -303,10 +307,6 @@ public class TestSuite {
         assertEquals(50_000, historyResult.getSecond().get(3).getValue());
         assertTrue(historyResult.getSecond().get(3).isDeposit());
         assertFalse(historyResult.getSecond().get(3).isUSD());
-
-        assertEquals(5_000, historyResult.getSecond().get(4).getValue());
-        assertFalse(historyResult.getSecond().get(4).isDeposit());
-        assertFalse(historyResult.getSecond().get(4).isUSD());
     }
 
     @Test
