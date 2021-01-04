@@ -65,7 +65,47 @@ public class TestSuite {
     }
 
     @Test
+    public void testWithdrawCLPMaxAmount() {
+        fail();
+    }
+
+    @Test
+    public void testWithdrawCLPNegative() {
+        fail();
+    }
+
+    @Test
+    public void testWithdrawCLPMinAmount() {
+        fail();
+    }
+
+    @Test
+    public void testWithdrawCLPAllFunds() {
+        fail();
+    }
+
+    @Test
     public void testWithdrawUSD() {
+        fail();
+    }
+
+    @Test
+    public void testWithdrawUSDMaxAmount() {
+        fail();
+    }
+
+    @Test
+    public void testWithdrawUSDNegative() {
+        fail();
+    }
+
+    @Test
+    public void testWithdrawUSDMinAmount() {
+        fail();
+    }
+
+    @Test
+    public void testWithdrawUSDAllFunds() {
         fail();
     }
 
