@@ -16,33 +16,67 @@ public class TestSuite {
     }
 
     @Test
-    public void testDoDepositCLP() {
-        assertEquals(true, false);
+    public void testDepositCLP() {
+        result = system.deposit(300_000, false);
+        assertEquals(SystemError.OK, result);
+        assertEquals(1_300_000, system.getCurrentUser().getBalance(false));
     }
 
     @Test
-    public void testDoDepositUSD() {
-        assertEquals(true, false);
+    public void testDepositCLPMaxAmount() {
+        fail();
     }
 
     @Test
-    public void testDoWithdrawCLP() {
-        assertEquals(true, false);
+    public void testDepositCLPNegative() {
+        fail();
     }
 
     @Test
-    public void testDoWithdrawUSD() {
-        assertEquals(true, false);
+    public void testDepositCLPMinAmount() {
+        fail();
+    }
+
+    @Test
+    public void testDepositUSD() {
+        result = system.deposit(200, true);
+        assertEquals(SystemError.OK, result);
+        assertEquals(200, system.getCurrentUser().getBalance(true));
+    }
+
+    @Test
+    public void testDepositUSDMaxAmount() {
+        fail();
+    }
+
+    @Test
+    public void testDepositUSDNegative() {
+        fail();
+    }
+
+    @Test
+    public void testDepositUSDMinAmount() {
+        fail();
+    }
+
+    @Test
+    public void testWithdrawCLP() {
+        fail();
+    }
+
+    @Test
+    public void testWithdrawUSD() {
+        fail();
     }
 
     @Test
     public void testMaxNumberOfOperations() {
-        assertEquals(true, false);
+        fail();
     }
 
     @Test
     public void testGetHistoryOfTransactions() {
-        assertEquals(true, false);
+        fail();
     }
 
     @Test

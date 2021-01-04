@@ -18,6 +18,14 @@ public class BankConsoleSystem {
         systemUsers.put(2021, new Client(2021, "new_year!"));
     }
 
+    public SystemError deposit(long amount, boolean isUSD) {
+        return SystemError.UNKNOWN;
+    }
+
+    public SystemError withdraw(long amount, boolean isUSD) {
+        return SystemError.UNKNOWN;
+    }
+
     public SystemError logIn(int id, String password) {
         if (currentUser == null) {
             if (systemUsers.containsKey(id)) {
