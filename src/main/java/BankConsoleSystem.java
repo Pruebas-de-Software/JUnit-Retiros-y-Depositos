@@ -6,6 +6,7 @@ public class BankConsoleSystem {
 
     public BankConsoleSystem() {
         setup();
+        //FIXME: logging (log4j or logback)
     }
 
     private void setup() {

@@ -120,7 +120,12 @@ public class TestSuite {
     }
 
     @Test
-    public void testMaxNumberOfOperations() {
+    public void testNumberOfOperationsInSession() {
+        fail();
+    }
+
+    @Test
+    public void testNumberOfOperationsInSessionMax() {
         fail();
     }
 
