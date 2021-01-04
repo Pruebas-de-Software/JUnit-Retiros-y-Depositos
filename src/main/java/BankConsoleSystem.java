@@ -10,6 +10,8 @@ public class BankConsoleSystem {
     private final float MIN_WITHDRAW_CLP = 2000;
     private final float MAX_WITHDRAW_USD = 100;
     private final float MAX_WITHDRAW_CLP = 200_000;
+    private final int MAX_OPERATIONS_SESSION = 4;
+    private int currentOperations;
 
     public BankConsoleSystem() {
         setup();
@@ -17,6 +19,7 @@ public class BankConsoleSystem {
     }
 
     private void setup() {
+        currentOperations = 0;
         currentUser = null;
         systemUsers = new HashMap<>();
         createUsers();
@@ -28,18 +31,29 @@ public class BankConsoleSystem {
 
     public SystemError deposit(long amount, boolean isUSD) {
         if (currentUser != null) {
+            if (currentOperations > MAX_OPERATIONS_SESSION) {
+                return SystemError.SESSION_NUMBER_OF_OPERATIONS_EXCEEDED;
+            }
             Operation op;
             if (isUSD) {
                 if (amount >= MIN_DEPOSIT_USD) {
                     op = new Operation(true, true, amount);
-                    return currentUser.doOperation(op);
+                    SystemError rc = currentUser.doOperation(op);
+                    if (rc == SystemError.OK) {
+                        currentOperations += 1;
+                    }
+                    return rc;
                 } else {
                     return SystemError.INVALID_OPERATION_AMOUNT;
                 }
             } else {
                 if (amount >= MIN_DEPOSIT_CLP) {
                     op = new Operation(true, false, amount);
-                    return currentUser.doOperation(op);
+                    SystemError rc = currentUser.doOperation(op);
+                    if (rc == SystemError.OK) {
+                        currentOperations += 1;
+                    }
+                    return rc;
                 } else {
                     return SystemError.INVALID_OPERATION_AMOUNT;
                 }
@@ -51,18 +65,29 @@ public class BankConsoleSystem {
 
     public SystemError withdraw(long amount, boolean isUSD) {
         if (currentUser != null) {
+            if (currentOperations > MAX_OPERATIONS_SESSION) {
+                return SystemError.SESSION_NUMBER_OF_OPERATIONS_EXCEEDED;
+            }
             Operation op;
             if (isUSD) {
                 if (amount >= MIN_WITHDRAW_USD && amount <= MAX_WITHDRAW_USD) {
                     op = new Operation(false, true, amount);
-                    return currentUser.doOperation(op);
+                    SystemError rc = currentUser.doOperation(op);
+                    if (rc == SystemError.OK) {
+                        currentOperations += 1;
+                    }
+                    return rc;
                 } else {
                     return SystemError.INVALID_OPERATION_AMOUNT;
                 }
             } else {
                 if (amount >= MIN_WITHDRAW_CLP && amount <= MAX_WITHDRAW_CLP) {
                     op = new Operation(false, false, amount);
-                    return currentUser.doOperation(op);
+                    SystemError rc = currentUser.doOperation(op);
+                    if (rc == SystemError.OK) {
+                        currentOperations += 1;
+                    }
+                    return rc;
                 } else {
                     return SystemError.INVALID_OPERATION_AMOUNT;
                 }
@@ -78,6 +103,7 @@ public class BankConsoleSystem {
                 Client client = systemUsers.get(id);
                 if (client.validatePassword(password)) {
                     currentUser = client;
+                    currentOperations = 0;
                     return SystemError.OK;
                 } else {
                     return SystemError.USER_INVALID_CREDENTIALS;

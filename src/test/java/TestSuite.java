@@ -141,6 +141,8 @@ public class TestSuite {
         for (int i = 0; i < 5; i++) {
             system.withdraw(200_000, false);
         }
+        system.logOut();
+        system.logIn(2021, "new_year!");
         result = system.withdraw(100_000, false);
         assertEquals(SystemError.INVALID_OPERATION_AMOUNT_NO_FUNDS, result);
     }
@@ -194,12 +196,20 @@ public class TestSuite {
 
     @Test
     public void testNumberOfOperationsInSession() {
-        fail();
+        system.logIn(2021, "new_year!");
+        for (int i = 0; i <= 4; i++) {
+            result = system.deposit(50, true);
+        }
+        assertEquals(SystemError.OK, result);
     }
 
     @Test
     public void testNumberOfOperationsInSessionMax() {
-        fail();
+        system.logIn(2021, "new_year!");
+        for (int i = 0; i <= 5; i++) {
+            result = system.deposit(50, true);
+        }
+        assertEquals(SystemError.SESSION_NUMBER_OF_OPERATIONS_EXCEEDED, result);
     }
 
     @Test
