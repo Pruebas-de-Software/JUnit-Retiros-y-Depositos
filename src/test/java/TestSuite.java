@@ -85,6 +85,11 @@ public class TestSuite {
     }
 
     @Test
+    public void testWithdrawCLPNoFunds() {
+        fail();
+    }
+
+    @Test
     public void testWithdrawUSD() {
         fail();
     }
@@ -110,12 +115,42 @@ public class TestSuite {
     }
 
     @Test
+    public void testWithdrawUSDNoFunds() {
+        fail();
+    }
+
+    @Test
     public void testMaxNumberOfOperations() {
         fail();
     }
 
     @Test
-    public void testGetHistoryOfTransactions() {
+    public void testGetHistoryEmpty() {
+        fail();
+    }
+
+    @Test
+    public void testGetHistoryDepositCLP() {
+        fail();
+    }
+
+    @Test
+    public void testGetHistoryDepositUSD() {
+        fail();
+    }
+
+    @Test
+    public void testGetHistoryWithdrawCLP() {
+        fail();
+    }
+
+    @Test
+    public void testGetHistoryWithdrawUSD() {
+        fail();
+    }
+
+    @Test
+    public void testGetHistoryMultipleOperations() {
         fail();
     }
 
