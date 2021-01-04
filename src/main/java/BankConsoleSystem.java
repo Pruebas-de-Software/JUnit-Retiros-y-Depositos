@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.List;
 
 public class BankConsoleSystem {
     private Client currentUser;
@@ -96,6 +97,17 @@ public class BankConsoleSystem {
         } else {
             return SystemError.USER_NOT_LOGGED_IN;
         }
+    }
+
+    public Pair<SystemError, List<Operation>> getHistory() {
+        Pair<SystemError, List<Operation>> result = new Pair<>(SystemError.UNKNOWN, null);
+        if (currentUser != null) {
+            result.setFirst(SystemError.OK);
+            result.setSecond(currentUser.getHistory());
+        } else {
+            result.setFirst(SystemError.USER_NOT_LOGGED_IN);
+        }
+        return result;
     }
 
     public Client getCurrentUser() {

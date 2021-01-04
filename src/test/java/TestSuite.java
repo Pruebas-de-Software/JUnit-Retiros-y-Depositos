@@ -1,11 +1,14 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestSuite {
     private final BankConsoleSystem system;
     private SystemError result;
+    private Pair<SystemError, List<Operation>> historyResult;
 
     public TestSuite() {
         this.system = new BankConsoleSystem();
@@ -200,33 +203,100 @@ public class TestSuite {
     }
 
     @Test
+    public void testGetHistoryNotLoggedIn() {
+        historyResult = system.getHistory();
+        assertEquals(SystemError.USER_NOT_LOGGED_IN, historyResult.getFirst());
+    }
+
+    @Test
     public void testGetHistoryEmpty() {
-        fail();
+        system.logIn(2021, "new_year!");
+        historyResult = system.getHistory();
+        assertEquals(SystemError.OK, historyResult.getFirst());
+        assertEquals(0, historyResult.getSecond().size());
     }
 
     @Test
     public void testGetHistoryDepositCLP() {
-        fail();
+        system.logIn(2021, "new_year!");
+        system.deposit(300_000, false);
+        historyResult = system.getHistory();
+        assertEquals(SystemError.OK, historyResult.getFirst());
+        assertEquals(1, historyResult.getSecond().size());
+        assertEquals(300_000, historyResult.getSecond().get(0).getValue());
+        assertTrue(historyResult.getSecond().get(0).isDeposit());
+        assertFalse(historyResult.getSecond().get(0).isUSD());
     }
 
     @Test
     public void testGetHistoryDepositUSD() {
-        fail();
+        system.logIn(2021, "new_year!");
+        system.deposit(50, true);
+        historyResult = system.getHistory();
+        assertEquals(SystemError.OK, historyResult.getFirst());
+        assertEquals(1, historyResult.getSecond().size());
+        assertEquals(50, historyResult.getSecond().get(0).getValue());
+        assertTrue(historyResult.getSecond().get(0).isDeposit());
+        assertTrue(historyResult.getSecond().get(0).isUSD());
     }
 
     @Test
     public void testGetHistoryWithdrawCLP() {
-        fail();
+        system.logIn(2021, "new_year!");
+        system.withdraw(150_000, false);
+        historyResult = system.getHistory();
+        assertEquals(SystemError.OK, historyResult.getFirst());
+        assertEquals(1, historyResult.getSecond().size());
+        assertEquals(150_000, historyResult.getSecond().get(0).getValue());
+        assertFalse(historyResult.getSecond().get(0).isDeposit());
+        assertFalse(historyResult.getSecond().get(0).isUSD());
     }
 
     @Test
     public void testGetHistoryWithdrawUSD() {
-        fail();
+        system.logIn(2021, "new_year!");
+        system.deposit(50, true);
+        system.withdraw(40, true);
+        historyResult = system.getHistory();
+        assertEquals(SystemError.OK, historyResult.getFirst());
+        assertEquals(2, historyResult.getSecond().size());
+        assertEquals(40, historyResult.getSecond().get(1).getValue());
+        assertFalse(historyResult.getSecond().get(1).isDeposit());
+        assertTrue(historyResult.getSecond().get(1).isUSD());
     }
 
     @Test
     public void testGetHistoryMultipleOperations() {
-        fail();
+        system.logIn(2021, "new_year!");
+        system.deposit(50, true);
+        system.withdraw(40, true);
+        system.withdraw(150_000, false);
+        system.deposit(50_000, false);
+        system.withdraw(5_000, false);
+        historyResult = system.getHistory();
+
+        assertEquals(SystemError.OK, historyResult.getFirst());
+        assertEquals(5, historyResult.getSecond().size());
+
+        assertEquals(50, historyResult.getSecond().get(0).getValue());
+        assertTrue(historyResult.getSecond().get(0).isDeposit());
+        assertTrue(historyResult.getSecond().get(0).isUSD());
+
+        assertEquals(40, historyResult.getSecond().get(1).getValue());
+        assertFalse(historyResult.getSecond().get(1).isDeposit());
+        assertTrue(historyResult.getSecond().get(1).isUSD());
+
+        assertEquals(150_000, historyResult.getSecond().get(2).getValue());
+        assertFalse(historyResult.getSecond().get(2).isDeposit());
+        assertFalse(historyResult.getSecond().get(2).isUSD());
+
+        assertEquals(50_000, historyResult.getSecond().get(3).getValue());
+        assertTrue(historyResult.getSecond().get(3).isDeposit());
+        assertFalse(historyResult.getSecond().get(3).isUSD());
+
+        assertEquals(5_000, historyResult.getSecond().get(4).getValue());
+        assertFalse(historyResult.getSecond().get(4).isDeposit());
+        assertFalse(historyResult.getSecond().get(4).isUSD());
     }
 
     @Test

@@ -4,7 +4,8 @@ import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 public class Client {
@@ -12,7 +13,7 @@ public class Client {
     private final String storedPassword;
     private final CurrencyAccount accountUSD;
     private final CurrencyAccount accountCLP;
-    private final ArrayList<Operation> history;
+    private final LinkedList<Operation> history;
     private MessageDigest hashing;
 
     public Client(int id, String clearPassword) {
@@ -28,7 +29,7 @@ public class Client {
         hashing.update(clearPassword.getBytes(StandardCharsets.UTF_8));
         storedPassword = DatatypeConverter.printHexBinary(hashing.digest()).toLowerCase(Locale.ROOT);
         userId = id;
-        history = new ArrayList<>();
+        history = new LinkedList<>();
     }
 
     public boolean validatePassword(String password) {
@@ -49,7 +50,7 @@ public class Client {
         return userId;
     }
 
-    public ArrayList<Operation> getHistory() {
+    public List<Operation> getHistory() {
         return history;
     }
 
