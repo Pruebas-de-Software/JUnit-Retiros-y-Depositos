@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestSuite {
@@ -31,21 +32,28 @@ public class TestSuite {
 
     @Test
     public void testDepositCLPMaxAmount() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.deposit(Long.MAX_VALUE, false);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT_MAX_OVERFLOW, result);
     }
 
     @Test
     public void testDepositCLPNegative() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.deposit(-200_000, false);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT, result);
     }
 
     @Test
     public void testDepositCLPMinAmount() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.deposit(1000, false);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT, result);
     }
 
     @Test
     public void testDepositUSD() {
+        system.logIn(2021, "new_year!");
         result = system.deposit(200, true);
         assertEquals(SystemError.OK, result);
         assertEquals(200, system.getCurrentUser().getBalance(true));
@@ -53,24 +61,30 @@ public class TestSuite {
 
     @Test
     public void testDepositUSDNotLoggedIn() {
-        result = system.deposit(300_000, false);
-        assertEquals(SystemError.OK, result);
-        assertEquals(1_300_000, system.getCurrentUser().getBalance(false));
+        result = system.deposit(300_000, true);
+        assertEquals(SystemError.USER_NOT_LOGGED_IN, result);
     }
 
     @Test
     public void testDepositUSDMaxAmount() {
-        fail();
+        system.logIn(2021, "new_year!");
+        system.deposit(3_000, true);
+        result = system.deposit(Long.MAX_VALUE, true);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT_MAX_OVERFLOW, result);
     }
 
     @Test
     public void testDepositUSDNegative() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.deposit(-2_000, true);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT, result);
     }
 
     @Test
     public void testDepositUSDMinAmount() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.deposit(5, true);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT, result);
     }
 
     @Test

@@ -1,3 +1,5 @@
+import com.google.common.math.LongMath;
+
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -54,15 +56,20 @@ public class Client {
     public SystemError doOperation(Operation op) {
         history.add(op);
         if (op.isDeposit()) {
-            long before;
             if (op.isUSD()) {
-                before = accountUSD.getBalance();
-                long updated = before + op.getValue();
-                accountUSD.setBalance(updated);
+                try {
+                    long result = LongMath.checkedAdd(accountUSD.getBalance(), op.getValue());
+                    accountUSD.setBalance(result);
+                } catch (ArithmeticException except) {
+                    return SystemError.INVALID_OPERATION_AMOUNT_MAX_OVERFLOW;
+                }
             } else {
-                before = accountCLP.getBalance();
-                long updated = before + op.getValue();
-                accountCLP.setBalance(updated);
+                try {
+                    long result = LongMath.checkedAdd(accountCLP.getBalance(), op.getValue());
+                    accountCLP.setBalance(result);
+                } catch (ArithmeticException except) {
+                    return SystemError.INVALID_OPERATION_AMOUNT_MAX_OVERFLOW;
+                }
             }
             return SystemError.OK;
         }
