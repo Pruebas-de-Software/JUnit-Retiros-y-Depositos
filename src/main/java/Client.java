@@ -57,22 +57,40 @@ public class Client {
         history.add(op);
         if (op.isDeposit()) {
             if (op.isUSD()) {
-                try {
-                    long result = LongMath.checkedAdd(accountUSD.getBalance(), op.getValue());
-                    accountUSD.setBalance(result);
-                } catch (ArithmeticException except) {
-                    return SystemError.INVALID_OPERATION_AMOUNT_MAX_OVERFLOW;
-                }
+                return doDeposit(op, accountUSD);
             } else {
-                try {
-                    long result = LongMath.checkedAdd(accountCLP.getBalance(), op.getValue());
-                    accountCLP.setBalance(result);
-                } catch (ArithmeticException except) {
-                    return SystemError.INVALID_OPERATION_AMOUNT_MAX_OVERFLOW;
-                }
+                return doDeposit(op, accountCLP);
             }
-            return SystemError.OK;
+        } else {
+            if (op.isUSD()) {
+                return doWithdraw(op, accountUSD);
+            } else {
+                return doWithdraw(op, accountCLP);
+            }
         }
-        return SystemError.UNKNOWN;
+    }
+
+    private SystemError doDeposit(Operation op, CurrencyAccount account) {
+        try {
+            long result = LongMath.checkedAdd(account.getBalance(), op.getValue());
+            account.setBalance(result);
+            return SystemError.OK;
+        } catch (ArithmeticException except) {
+            return SystemError.INVALID_OPERATION_AMOUNT_MAX_OVERFLOW;
+        }
+    }
+
+    private SystemError doWithdraw(Operation op, CurrencyAccount account) {
+        try {
+            long result = LongMath.checkedSubtract(account.getBalance(), op.getValue());
+            if (result >= 0) {
+                account.setBalance(result);
+                return SystemError.OK;
+            } else {
+                return SystemError.INVALID_OPERATION_AMOUNT_NO_FUNDS;
+            }
+        } catch (ArithmeticException except) {
+            return SystemError.INVALID_OPERATION_AMOUNT_MIN_OVERFLOW;
+        }
     }
 }

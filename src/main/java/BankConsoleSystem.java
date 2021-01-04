@@ -7,6 +7,8 @@ public class BankConsoleSystem {
     private final float MIN_DEPOSIT_CLP = 2000;
     private final float MIN_WITHDRAW_USD = 10;
     private final float MIN_WITHDRAW_CLP = 2000;
+    private final float MAX_WITHDRAW_USD = 100;
+    private final float MAX_WITHDRAW_CLP = 200_000;
 
     public BankConsoleSystem() {
         setup();
@@ -27,14 +29,14 @@ public class BankConsoleSystem {
         if (currentUser != null) {
             Operation op;
             if (isUSD) {
-                if (amount > MIN_DEPOSIT_USD) {
+                if (amount >= MIN_DEPOSIT_USD) {
                     op = new Operation(true, true, amount);
                     return currentUser.doOperation(op);
                 } else {
                     return SystemError.INVALID_OPERATION_AMOUNT;
                 }
             } else {
-                if (amount > MIN_DEPOSIT_CLP) {
+                if (amount >= MIN_DEPOSIT_CLP) {
                     op = new Operation(true, false, amount);
                     return currentUser.doOperation(op);
                 } else {
@@ -47,7 +49,26 @@ public class BankConsoleSystem {
     }
 
     public SystemError withdraw(long amount, boolean isUSD) {
-        return SystemError.UNKNOWN;
+        if (currentUser != null) {
+            Operation op;
+            if (isUSD) {
+                if (amount >= MIN_WITHDRAW_USD && amount <= MAX_WITHDRAW_USD) {
+                    op = new Operation(false, true, amount);
+                    return currentUser.doOperation(op);
+                } else {
+                    return SystemError.INVALID_OPERATION_AMOUNT;
+                }
+            } else {
+                if (amount >= MIN_WITHDRAW_CLP && amount <= MAX_WITHDRAW_CLP) {
+                    op = new Operation(false, false, amount);
+                    return currentUser.doOperation(op);
+                } else {
+                    return SystemError.INVALID_OPERATION_AMOUNT;
+                }
+            }
+        } else {
+            return SystemError.USER_NOT_LOGGED_IN;
+        }
     }
 
     public SystemError logIn(int id, String password) {

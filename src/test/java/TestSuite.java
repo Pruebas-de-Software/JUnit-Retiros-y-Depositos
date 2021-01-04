@@ -89,62 +89,104 @@ public class TestSuite {
 
     @Test
     public void testWithdrawCLP() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.withdraw(150_000, false);
+        assertEquals(SystemError.OK, result);
+        assertEquals(850_000, system.getCurrentUser().getBalance(false));
+    }
+
+    @Test
+    public void testWithdrawCLPNotLoggedIn() {
+        result = system.withdraw(300_000, false);
+        assertEquals(SystemError.USER_NOT_LOGGED_IN, result);
     }
 
     @Test
     public void testWithdrawCLPMaxAmount() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.withdraw(250_000, false);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT, result);
     }
 
     @Test
     public void testWithdrawCLPNegative() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.withdraw(-3_000, false);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT, result);
     }
 
     @Test
     public void testWithdrawCLPMinAmount() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.withdraw(1000, false);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT, result);
     }
 
     @Test
     public void testWithdrawCLPAllFunds() {
-        fail();
+        system.logIn(2021, "new_year!");
+        for (int i = 0; i < 5; i++) {
+            result = system.withdraw(200_000, false);
+            assertEquals(SystemError.OK, result);
+        }
+        assertEquals(0, system.getCurrentUser().getBalance(false));
     }
 
     @Test
     public void testWithdrawCLPNoFunds() {
-        fail();
+        system.logIn(2021, "new_year!");
+        for (int i = 0; i < 5; i++) {
+            system.withdraw(200_000, false);
+        }
+        result = system.withdraw(100_000, false);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT_NO_FUNDS, result);
     }
 
     @Test
     public void testWithdrawUSD() {
-        fail();
+        system.logIn(2021, "new_year!");
+        system.deposit(200, true);
+        result = system.withdraw(50, true);
+        assertEquals(SystemError.OK, result);
+        assertEquals(150, system.getCurrentUser().getBalance(true));
     }
 
     @Test
     public void testWithdrawUSDMaxAmount() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.withdraw(120, true);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT, result);
     }
 
     @Test
     public void testWithdrawUSDNegative() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.withdraw(-500, true);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT, result);
     }
 
     @Test
     public void testWithdrawUSDMinAmount() {
-        fail();
+        system.logIn(2021, "new_year!");
+        result = system.withdraw(5, true);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT, result);
     }
 
     @Test
     public void testWithdrawUSDAllFunds() {
-        fail();
+        system.logIn(2021, "new_year!");
+        system.deposit(80, true);
+        result = system.withdraw(80, true);
+        assertEquals(SystemError.OK, result);
+        assertEquals(0, system.getCurrentUser().getBalance(true));
     }
 
     @Test
     public void testWithdrawUSDNoFunds() {
-        fail();
+        system.logIn(2021, "new_year!");
+        system.deposit(50, true);
+        result = system.withdraw(80, true);
+        assertEquals(SystemError.INVALID_OPERATION_AMOUNT_NO_FUNDS, result);
     }
 
     @Test
