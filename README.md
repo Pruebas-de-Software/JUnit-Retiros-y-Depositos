@@ -1,4 +1,10 @@
-# inf331-tarea3
+## Acerca de
+La tarea consiste en construir un aplicativo del "Blue Bank" que permita realizar 2 tipos de transacciones electrónicas:
+
+- Retirar dinero desde cuenta
+- Depositar dinero en cuenta
+
+Se debe tener en consideración que un usuario maneja dos tipos de cuentas (En 'CLP' y en 'USD').
 
 ## Obtener las fuentes
 
