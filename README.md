@@ -6,6 +6,54 @@ La tarea consiste en construir un aplicativo del "Blue Bank" que permita realiza
 
 Se debe tener en consideración que un usuario maneja dos tipos de cuentas (En 'CLP' y en 'USD').
 
+## Test a implementar
+
+|ítem	| Detalle| 
+|---- | ---- |
+|Test Inicialización|	|
+|Test de Sesión	||
+|Test Número de Operaciones por Sesión, en rango|	|
+|Test Número de Operaciones por Sesión, valor límite||	
+|Test Número de Sesiones, en rango	||
+|Test Número de Sesiones, valor límite	||
+|Test de Reinicio de Sesión	||
+|Test depósito||	
+|Test CantidadNoPermitida en CLP||	
+|Test CantidadNoPermitida en USD||	
+|Test CantidadNegativa en CLP	||
+|Test CantidadNegativa en USD	||
+|Test DespositoMontoCorrecto CLP||	
+|Test DepositoMontoCorrecto USD||	
+|Test DepositosIncrementos CLP|	Varias operaciones en test|
+|Test DepositoIncrements USD|	Varias operaciones en test|
+|Test DepositoMinimoPermitido CLP||	
+|Test DepositoMinimoPermitidoUSD||	
+|Test Retiro	||
+|Test CantidadNoPermitida en CLP||	
+|Test CantidadNoPermitida en USD	||
+|Test CantidadNegativa en CLP	||
+|Test CantidadNegativa en USD	||
+|Test RetiroMontoCorrecto CLP	||
+|Test RetiroMontoCorrecto USD	||
+|Test RetiroDremento en CLP|	Varias operaciones en test|
+|Test RetiroDremento USD|	Varias operaciones en test|
+|Test RetiroMinimoPermitido CLP|	|
+|Test RetiroMinimoPermitido USD	||
+|Test RetiroMáximoPermitido CLP	||
+|Test RetiroMáximoPermitido USD	||
+|Test RetiroVaciadoDeCuenta USD	||
+|Test RetiroVaciadoDeCuenta CLP	||
+|Test Historico de Transacciones	||
+|Test HistoricoTransaccionesInicio	||
+|Test HistoricoTransaccionesDeposito  CLP||	
+|Test HistoricoTransaccionesDeposito USD	||
+|Test HistoricoTransaccioneRetiro CLP	||
+|Test HistorioTransaccionesRetiro USD	||
+|TestAplicativo|	|
+|TestSet	|En caso de ser necesarios|
+|TestGetters|	En caso de ser necesarios||
+
+
 ## Obtener las fuentes
 
 Para obtener las fuentes y sus dependencias se deben realizar los siguientes pasos:
